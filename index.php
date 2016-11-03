@@ -4,6 +4,8 @@ error_reporting(0);
 include 'includes/restful_commands.php';
 include 'includes/class_entity.php';
 include 'includes/controls.php';
+include 'includes/sql_queries.php';
+include 'includes/connect_db.php';
 
 // Home assistant variables
 $home_assistant_url = "localhost:8123/api/";
@@ -56,7 +58,8 @@ $ch = curl_init($home_assistant_url);
 	 					<div class="panel-body">
 	 						<?php 
 	 							foreach($entity_ids[$index][0] as $devices)
-	 							{ ?>
+	 							{
+									?>
 	 								<div>
 	 									
 	 									<!-- Label -->
@@ -67,8 +70,30 @@ $ch = curl_init($home_assistant_url);
 	 										{
 	 											if($entity->entity_id==$devices)
 	 											{
+	 												// Checking and creating if devices table exists
+	 												createTableIfNotExists($conn, "devices");
+	 												
 	 												echo $entity->friendly_name;
 	 												$state = $entity->state;
+<<<<<<< Updated upstream
+=======
+	 												$control = preg_replace('/(.*)\.(.*)/', '$1', $devices);
+	 												// Data to save in the table
+	 												$data = Array($devices, $entity->friendly_name, $location, $control);
+	 												insertRow($conn, "devices", $data);
+	 												// Checking if the talbe for the entity id exists, if not creating the table
+	 												createTableIfNotExists($conn, $control);
+	 												// Checking if the device is light, if yes getting the brighness information
+	 												
+	 												if($control=="light")
+	 												{
+	 													if(array_key_exists("brightness", $entity->attributes))
+	 														$brightness = $entity->attributes['brightness'];
+	 													else
+	 														$brightness = 0;
+	 												}
+	 												break;
+>>>>>>> Stashed changes
 	 											} 
 	 										}		
 	 										?>
@@ -79,6 +104,18 @@ $ch = curl_init($home_assistant_url);
 	 										<?php getControl(preg_replace('/(.*)\.(.*)/', '$1', $devices),$state,$devices);?>
 	 									</div>
 	 									<div style="clear: both;"></div>
+<<<<<<< Updated upstream
+=======
+	 									<?php if($control=="light") // adding brightness control
+	 										  {?>
+	 										  	<div id="<?php echo $devices;?>_brightness_div" style="float: right;">
+	 										  		<input type="range" min="0" max="255" id="<?php echo $devices;?>_brightness_control" onchange="changeBrightness('<?php echo $devices?>',this.value);" value=<?php echo $brightness; if($state=='off') echo ' style="display: none;"'?>>
+	 										  	</div>
+	 										  	<div style="clear: both;"></div>
+	 									<?php }		
+	 									?>
+	 				
+>>>>>>> Stashed changes
 	 								</div>
 	 				  	<?php	}$index++;
 	 						?>
