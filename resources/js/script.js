@@ -9,9 +9,6 @@ $(document).ready(function(){
 		}
 	});*/
 	
-<<<<<<< Updated upstream
-	var source = new EventSource("includes/getUpdates.php");
-=======
 	var entities = new Array();
 	// Creating entitites array
 	// Iterating through all panels (each panel can have entities)
@@ -30,9 +27,77 @@ $(document).ready(function(){
 	var i=0;
 	var entity = "";
 	var source = new EventSource("http://192.168.1.12:8123/api/stream");
->>>>>>> Stashed changes
     source.onmessage = function(event) {
-        alert(event.data);
+    	
+    	if ("ping" === event.data) {
+            return;
+        }
+    	
+    	var obj = JSON.parse(event.data);
+        var new_state = "";
+        var domain = "";
+        var brightness = 0; // for light devices
+    	console.log('checking' + (i++) + event.data);
+    	if(typeof obj.data.new_state!=="undefined")
+    	{
+    		if(typeof obj.data.new_state.attributes.entity_id!=="undefined")
+    		{
+    			//alert(obj.data.new_state.attributes.entity_id.length);
+    			if(!jQuery.isArray(obj.data.new_state.attributes.entity_id))
+    			{
+    				//$('#stream_data').text(obj.data.new_state.attributes.entity_id);
+    				entity = obj.data.new_state.attributes.entity_id;
+    				domain = entity.replace(/(\w+)\.(\w+)/,'$1');
+    	    		if(domain=="light") // if the object is light get the brightness information
+    	    		{
+    	    			if(obj.data.new_state.attributes.brightness!=="undefined")
+    	    			{
+    	    				brightness = obj.data.new_state.attributes.brightness;
+    	    			}
+    	    		}
+    			}
+    		}
+	    	else if(typeof obj.data.new_state.entity_id!=="undefined")
+	    	{
+	    		//alert(obj.data.new_state.entity_id.length);
+	    		if(!jQuery.isArray(obj.data.new_state.entity_id))
+	    		{	//$('#stream_data').text(obj.data.new_state.entity_id);
+	    			entity = obj.data.new_state.entity_id;
+	    			domain = entity.replace(/(\w+)\.(\w+)/,'$1');
+	        		if(domain=="light") // if the object is light get the brightness information
+	        		{
+	        			if(obj.data.new_state.attributes.brightness!=="undefined")
+	        			{
+	        				brightness = obj.data.new_state.attributes.brightness;
+	        			}
+	        		}
+	    		}
+	    	}
+    		new_state = obj.data.new_state.state;
+    	}
+    	//alert(entity);
+    	//alert(new_state);
+    	if(jQuery.inArray(entity,entities)>-1){
+    		//alert("inside change");
+    		// For Lights
+    		if(new_state == "on")
+    		{
+    			document.getElementById(entity).checked = true;
+    			if(domain == "light")
+    			{
+    				document.getElementById(entity+"_brightness_control").style.display = "inline-block";
+    				document.getElementById(entity+"_brightness_control").value = brightness;
+    			}
+    		}
+    		else if(new_state=="off")
+    		{
+    			document.getElementById(entity).checked = false;
+    			if(domain == "light")
+    			{
+    				document.getElementById(entity+"_brightness_control").style.display = "none";
+    			}
+    		}
+    	}
     };
 	
 });
@@ -44,6 +109,19 @@ function toggleLight(id)
 	$.ajax({
 		url: "includes/restful_commands.php",
 		data:{action: "toggleLight", id: id},
+		type: "POST",
+		success: function(data){
+			//alert(data);
+		}
+	});
+}
+
+// Changing the brightness of the lights
+function changeBrightness(id, brightness){
+	// calling ajax to cal php function to change the brightness
+	$.ajax({
+		url: "includes/restful_commands.php",
+		data:{action: "changeBrightness", id: id, brightness: brightness},
 		type: "POST",
 		success: function(data){
 			//alert(data);

@@ -24,6 +24,7 @@ $ch = curl_init($home_assistant_url);
 	</head>
  	<body>
  		<h1 style="text-align: center;font-weight: bold;font-size: 60px;" class="text-primary page-header">PILLAR</h1>
+ 		<div id="stream_data"></div>
  		<div class="container" id="display_devices">
  			<?php 
  			
@@ -52,7 +53,7 @@ $ch = curl_init($home_assistant_url);
  			$index = 0;
  			foreach ($groups as $location)
  			{?>
- 				<div class="col-sm-4 col-md-4 col-lg-4">
+ 				<div id="room" class="col-sm-4 col-md-4 col-lg-4">
 	 				<div class="panel panel-info">
 	 					<div class="panel-heading"><?php echo $location;?></div>
 	 					<div class="panel-body">
@@ -75,8 +76,6 @@ $ch = curl_init($home_assistant_url);
 	 												
 	 												echo $entity->friendly_name;
 	 												$state = $entity->state;
-<<<<<<< Updated upstream
-=======
 	 												$control = preg_replace('/(.*)\.(.*)/', '$1', $devices);
 	 												// Data to save in the table
 	 												$data = Array($devices, $entity->friendly_name, $location, $control);
@@ -93,19 +92,17 @@ $ch = curl_init($home_assistant_url);
 	 														$brightness = 0;
 	 												}
 	 												break;
->>>>>>> Stashed changes
 	 											} 
-	 										}		
+	 										}
+	 										
 	 										?>
 	 									</label>
 	 									
 	 									<!-- Control -->
-	 									<div style="float: right;">
-	 										<?php getControl(preg_replace('/(.*)\.(.*)/', '$1', $devices),$state,$devices);?>
+	 									<div id="control" style="float: right;">
+	 										<?php getControl($control, $state, $devices);?>
 	 									</div>
 	 									<div style="clear: both;"></div>
-<<<<<<< Updated upstream
-=======
 	 									<?php if($control=="light") // adding brightness control
 	 										  {?>
 	 										  	<div id="<?php echo $devices;?>_brightness_div" style="float: right;">
@@ -115,7 +112,6 @@ $ch = curl_init($home_assistant_url);
 	 									<?php }		
 	 									?>
 	 				
->>>>>>> Stashed changes
 	 								</div>
 	 				  	<?php	}$index++;
 	 						?>
