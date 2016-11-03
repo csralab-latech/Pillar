@@ -1,0 +1,45 @@
+---
+homeassistant:
+  name: Home
+  latitude: 32.515100
+  longitude: -92.626200
+  elevation: 91
+  unit_system: imperial
+  time_zone: America/Chicago
+wink:
+  access_token: mXl2w651kQNWl-kg-wphZaP9IcYFO7U_
+notify:
+- name: PILLAR
+  platform: rest
+  resource: http://138.47.154.139/HomeAutomation/includes/getUpdates.php
+automation:
+  trigger:
+    platform: state
+    entity_id: group.all_lights
+  action:
+    service: notify.pillar
+    data:
+      message: Light toggled
+group:
+  Living Room:
+    view: true
+    entities:
+    - light.living_room_lamp
+    - light.lightstrips_1
+  Ground Floor:
+    view: true
+    entities:
+    - light.lightstrips_2
+frontend: ~
+http: ~
+updater: ~
+conversation: ~
+history: ~
+logbook: ~
+sun: ~
+sensor:
+- platform: yr
+- platform: fitbit
+  monitored_resources:
+  - body/weight
+...
