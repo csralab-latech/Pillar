@@ -7,6 +7,18 @@ body{
 	background-size: cover; 
 }
 
+#reports>div div{
+	margin-bottom: 10px;
+}
+
+#myScrollspy {
+      position: relative;
+}
+ul.nav-pills {
+      top: 20px;
+      position: fixed;
+}
+
 a{
 	color: #00ffff;
 	font-weight: bold;	

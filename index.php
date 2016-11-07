@@ -11,7 +11,7 @@ include 'includes/connect_db.php';
 $home_assistant_url = "localhost:8123/api/";
 $ch = curl_init($home_assistant_url);
 ?>
-
+<!DOCTYPE html>
 <html>
 	<head>
 		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -27,7 +27,7 @@ $ch = curl_init($home_assistant_url);
  		<h1 style="text-align: center;font-weight: bold;font-size: 60px;" class="text-primary">PILLAR</h1>
  		<ul class="nav nav-tabs">
 		  <li class="active"><a data-toggle="tab" href="#display_devices">Control Devices</a></li>
-		  <li><a data-toggle="tab" href="#reports" onclick="getGraph('power_consumption');">Reports</a></li>
+		  <li><a data-toggle="tab" href="#reports_navigation" onclick="getGraph('power_consumption');">Reports</a></li>
 		</ul>
 		
 		<div class="tab-content">
@@ -127,24 +127,36 @@ $ch = curl_init($home_assistant_url);
 	 		</div>
  		
 	 		<!-- Visual graphs for the device history -->
-	 		<!-- Temperory button to call function to draw charts -->
-	 		<div class="tab-pane fade" id="reports" >
+	 		<div id="reports_navigation" class="tab-pane fade">
 	 			<div>
 		 			<div class="col-md-2 col-lg-2 col-sm-2">
-		 				<ul class="nav nav-pills nav-stacked">
-					        <li class="active"><a data-toggle="pill" href="#power_consumption">Power Consumption</a></li>
-					        <li><a data-toggle="pill" href="#calories">Calories</a></li>
-					        <li><a data-toggle="pill" href="#temperature">Temperature</a></li>
-					        <li><a data-toggle="pill" href="#health">Health Data</a></li>
-				      </ul>
-		 			</div>
-		 			<div class="col-md-10 col-lg-10 col-sm-10 tab-content">
-    					<div id="power_consumption" class="tab-pane fade in active">
-      						<div id='light_chart_div'></div>
+		 				<div class='list-group'>
+					        <a class="list-group-item active" onclick="toggleVisibility(this,'power_consumption');" href="#power_consumption">Power Consumption</a>
+					        <a class="list-group-item" onclick="toggleVisibility(this,'calories');" href="#calories">Calories</a>
+					        <a class="list-group-item" onclick="toggleVisibility(this,'temperature');" href="#temperature">Temperature</a>
+					        <a class="list-group-item" onclick="toggleVisibility(this,'health');" href="#health">Health Data</a>
+					    </div>
+				     </div>
+		 			<div id="reports" class="col-md-10 col-lg-10 col-sm-10">
+    					<div id="power_consumption">
+      						<div class="col-md-6 col-lg-6 col-sm-6" id='light_chart_div'></div>
+      						<div class="col-md-6 col-lg-6 col-sm-6" id='light_chart_div1'></div>
+      						<div class="col-md-6 col-lg-6 col-sm-6" id='light_chart_div2'></div>
     					</div>
-    					<div id="calories" class="tab-pane fade">
-      						<h3>HOME2</h3>
-      						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+    					<div id="calories">
+      						<div class="col-md-6 col-lg-6 col-sm-6" id='calories_chart_div'></div>
+    					</div>
+    					<div id="temperature">
+      						<div class="col-md-6 col-lg-6 col-sm-6" id='temperature_chart_div'></div>
+    					</div>
+    					<div id="health">
+      						<div style="background-color: white" class="col-md-6 col-lg-6 col-sm-6" id='health_chart_div'>
+      							Last treatment name: Heart Transplantation <br>
+      							Last treatment date: 11/7/2016 <br>
+      							Doctor name: Box <br>
+      							Blood pressure: 60-90mm Hg 90-140mm Hg <br>
+      							Cholesterol: 2.1~5.2 mmol/L 
+      						</div>
     					</div>
     				</div>
 	 			</div>

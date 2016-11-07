@@ -73,4 +73,4 @@ function draw_watts_consumed_reports(){
 		}
 							 
 	}
-	return '[' . $rows_data_chart . ']';}?>
+	return $rows_data_chart;}?>
