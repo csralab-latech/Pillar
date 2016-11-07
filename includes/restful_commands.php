@@ -16,6 +16,44 @@ if(isset($_POST['action']) && !empty($_POST['action']))
 		$entity_endpoint = "services/$domain/$service";
 		echo post_states($curl, $data, $entity_endpoint, $hass_url);
 	}
+	else if(isset($_POST['action']) && $_POST['action']=="changeBrightness")
+	{
+		$entity_id = $_POST['id'];
+		$brightness = $_POST['brightness'];
+		$domain = preg_replace('/(.*)\.(.*)/', '$1', $entity_id);
+		if($brightness>0)
+		{
+			$service = "turn_on";
+			$data = Array("entity_id"=>$entity_id, "brightness"=>$brightness);
+		}
+		else
+		{
+			$service = "turn_off";
+			$data = Array("entity_id"=>$entity_id);
+		}
+		$entity_endpoint = "services/$domain/$service";
+		//var_dump($data);
+		echo post_states($curl, $data, $entity_endpoint, $hass_url);
+	}
+	else if(isset($_POST['action']) && $_POST['action']=="toggleLock")
+	{
+		$entity_id = $_POST['id'];
+		$type = $_POST['type'];
+		$domain = preg_replace('/(.*)\.(.*)/', '$1', $entity_id);
+		if($type=="on")
+		{
+			$service = "lock";
+		}
+		else
+		{
+			$service = "unlock";
+		}
+		$data = Array("entity_id"=>$entity_id);
+		$entity_endpoint = "services/$domain/$service";
+		//var_dump($data);
+		echo post_states($curl, $data, $entity_endpoint, $hass_url);
+	}
+	
 	curl_close($curl);
 }
 

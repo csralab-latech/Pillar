@@ -1,15 +1,9 @@
 // Server sent events
+var entities = new Array();
 
 $(document).ready(function(){
-	/*$.ajax({
-		url: "includes/getUpdates.php",
-		type: "GET",
-		success: function(data){
-			alert(data);
-		}
-	});*/
-	
-	var entities = new Array();
+	// Load the Visualization API and the corechart package.
+	google.charts.load('current', {'packages':['corechart']});
 	// Creating entitites array
 	// Iterating through all panels (each panel can have entities)
 	$('#display_devices #room').each(function(){
@@ -26,7 +20,7 @@ $(document).ready(function(){
 	//alert(entities.length);
 	var i=0;
 	var entity = "";
-	var source = new EventSource("http://192.168.1.12:8123/api/stream");
+	var source = new EventSource("http://192.168.0.115:8123/api/stream");
     source.onmessage = function(event) {
     	
     	if ("ping" === event.data) {
@@ -80,7 +74,7 @@ $(document).ready(function(){
     	if(jQuery.inArray(entity,entities)>-1){
     		//alert("inside change");
     		// For Lights
-    		if(new_state == "on")
+    		if(new_state == "on" || new_state == "locked")
     		{
     			document.getElementById(entity).checked = true;
     			if(domain == "light")
@@ -89,7 +83,7 @@ $(document).ready(function(){
     				document.getElementById(entity+"_brightness_control").value = brightness;
     			}
     		}
-    		else if(new_state=="off")
+    		else if(new_state=="off" || new_state=="unlocked")
     		{
     			document.getElementById(entity).checked = false;
     			if(domain == "light")
@@ -116,6 +110,24 @@ function toggleLight(id)
 	});
 }
 
+//function to toggle lock
+function toggleLock(id)
+{
+	var type = "";
+	if(document.getElementById(id).checked)
+		type = "on";
+	else
+		type = "off";
+	// calling ajax to call php function to toggle the light
+	$.ajax({
+		url: "includes/restful_commands.php",
+		data:{action: "toggleLock", id: id, type: type},
+		type: "POST",
+		success: function(data){
+		}
+	});
+}
+
 // Changing the brightness of the lights
 function changeBrightness(id, brightness){
 	// calling ajax to cal php function to change the brightness
@@ -125,6 +137,31 @@ function changeBrightness(id, brightness){
 		type: "POST",
 		success: function(data){
 			//alert(data);
+		}
+	});
+}
+
+function getGraph(chart_type){
+	$.ajax({
+		url: "includes/reports.php",
+		data: {action: chart_type},
+		type: "POST",
+		success: function(row_data){
+			google.charts.setOnLoadCallback(function(){
+				var data = new google.visualization.DataTable();
+				data.addColumn('date', 'Day');
+				data.addColumn('number', 'Watts consumed');
+				console.log(row_data);	
+			    data.addRows([[new Date(2016, 10, 03), 301.66666666667],[new Date(2016, 10, 05), 719.1339869281],[new Date(2016, 10, 06), 1913.1111111111],]);
+			    // Set chart options
+			    var options = {'title':'Watts consumed per day',
+			                    'width':400,
+			                    'height':300};
+
+			    // Instantiate and draw our chart, passing in some options.
+			    var chart = new google.visualization.ColumnChart(document.getElementById('light_chart_div'));
+			    chart.draw(data, options);
+			});
 		}
 	});
 }
