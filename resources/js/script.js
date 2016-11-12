@@ -26,7 +26,7 @@ $(document).ready(function(){
 	//alert(entities.length);
 	var i=0;
 	var entity = "";
-	var source = new EventSource("http://192.168.0.115:8123/api/stream");
+	var source = new EventSource("http://iothouse.ddns.net:8123/api/stream");
     source.onmessage = function(event) {
     	
     	if ("ping" === event.data) {
@@ -216,7 +216,7 @@ function getGraph(chart_type){
 				      var options = {
 				        title: 'Calories Consumed/Burnt',
 				        'width':400,
-	                    'height':300
+	                                'height':300,
 	                    //chartArea: {height: "10%"},
 	                    //legend: {position: 'top'}
 	                    };
@@ -273,5 +273,23 @@ function toggleVisibility(element, report_type){
 			$('#temperature_chart_div>div>div:first-child').css('width',"100%");
 			$('#temperature_chart_div svg:first-child').css('width',"100%");
 			$('#temperature_chart_div svg:first-child').children('rect').css("width","100%");
+		}
+		else if(report_type=="home")
+		{
+			$('#home_link_div>div>div:first-child').css('width',"100%");
+			$('#home_link_div svg:first-child').css('width',"100%");
+			$('#home_link_div svg:first-child').children('rect').css("width","100%");
+		}
+		else if(report_type=="kiosk")
+		{
+			$('#kiosk_link_div>div>div:first-child').css('width',"100%");
+			$('#kiosk_link_div svg:first-child').css('width',"100%");
+			$('#kiosk_link_div svg:first-child').children('rect').css("width","100%");
+		}
+		else if(report_type=="fridge")
+		{
+			$('#fridge_link_div>div>div:first-child').css('width',"100%");
+			$('#fridge_link_div svg:first-child').css('width',"100%");
+			$('#fridge_link_div svg:first-child').children('rect').css("width","100%");
 		}
 }

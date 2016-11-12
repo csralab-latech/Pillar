@@ -2,7 +2,7 @@
 $host = "localhost";
 $database = "homeautomation";
 $user = 'root';
-$password = '';
+$password = 'password';
 
 // Checking if the database exists, if not creating
 $conn = mysqli_connect($host, $user, $password);

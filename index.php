@@ -1,4 +1,10 @@
 <?php 
+session_start();
+
+#if(!(isset($_SESSION['sessionUsername']) && !empty($_SESSION['sessionUsername'])))
+#{
+#	header("Location: http://iothouse.ddns.net");
+#}
 
 error_reporting(0);
 include 'includes/restful_commands.php';
@@ -6,10 +12,10 @@ include 'includes/class_entity.php';
 include 'includes/controls.php';
 include 'includes/sql_queries.php';
 include 'includes/connect_db.php';
-
 // Home assistant variables
-$home_assistant_url = "localhost:8123/api/";
+$home_assistant_url = "http://iothouse.ddns.net:8123/api/";
 $ch = curl_init($home_assistant_url);
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -28,9 +34,10 @@ $ch = curl_init($home_assistant_url);
  		<ul class="nav nav-tabs">
 		  <li class="active"><a data-toggle="tab" href="#display_devices">Control Devices</a></li>
 		  <li><a data-toggle="tab" href="#reports_navigation" onclick="getGraph('power_consumption');">Reports</a></li>
+		  <li><a data-toggle="tab" href="#links">Links</a></li>
 		</ul>
-		
-		<div class="tab-content">
+	        	
+                <div class="tab-content">
 			<div class="container tab-pane fade in active" id="display_devices">
 	 			<?php 
 	 			
@@ -154,18 +161,37 @@ $ch = curl_init($home_assistant_url);
       							Last treatment name: Heart Transplantation <br>
       							Last treatment date: 11/7/2016 <br>
       							Doctor name: Box <br>
-      							Blood pressure: 60-90mm Hg 90-140mm Hg <br>
+      							Blood pressu <br>0-90mm Hg 90-140mm Hg <br>
       							Cholesterol: 2.1~5.2 mmol/L 
       						</div>
     					</div>
     				</div>
+ 		
+	 				</div>
 	 			</div>
-	 		</div>
- 		</div> 			 		
- 	</body>
-
-<?php 
-
-?>
-
+                
+			<div class="tab-pane fade" id="links">
+	 			<div>
+		 			<div class="col-md-2 col-lg-2 col-sm-2">
+		 				<div class='list-group'>
+					            <a class="list-group-item" onclick="toggleVisibility(this,'home');" href="/">Home</a>
+					            <a class="list-group-item" onclick="toggleVisibility(this,'kiosk');" href="/fridge">Kiosk</a>
+					            <a class="list-group-item" onclick="toggleVisibility(this,'fridge');" href="http://iothouse.ddns.net:8080/laTechProject2">Main Fridge</a>
+                                                </div>
+                                        </div>
+                                        <div id="linkss" class="col-md-10 col-lg-10 col-sm-10">
+                                           <div id="home">
+                                                <div class="col-md-6 col-lg-6 col-sm-6" id='home_link_div'></div>
+                                            </div>
+                                            <div id="kiosk">
+                                                  <div class="col-md-6 col-lg-6 col-sm-6" id='kiosk_link_div' href='/'></div>
+                                           </div> 
+                                            <div id="fridge">
+                                                  <div class="col-md-6 col-lg-6 col-sm-6" id='fridge_link_div'></div>
+                                           </div> 
+                                        </div> 
+                                </div>
+                        </div>
+                </div>
+        </body>
 </html>

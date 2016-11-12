@@ -107,7 +107,7 @@
         // Chart data for activity tracker
         data = new google.visualization.DataTable();
         data.addColumn('date', 'Day');
-      	data.addColumn('number', 'Calories Burnt');
+      	data.addColumn('number', 'Calories Burned');
 
         data.addRows([
                       [new Date(2016,10,6) , 100],
@@ -120,6 +120,8 @@
                     var options = {
                       title: 'Calories Consumed per day',
                       'width':400,
+                      //areaOpacity: 0.0,
+                      backgroundColor: { fill:'transparent' }
                       'height':300};
 		var chart = new google.visualization.ColumnChart(document.getElementById('activity_tracker_chart_div'));
         chart.draw(data, options);
