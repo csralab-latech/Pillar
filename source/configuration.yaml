@@ -24,7 +24,7 @@ wink:
 notify:
   - name: PILLAR
     platform: rest
-    resource: http://138.47.154.139/HomeAutomation/includes/getUpdates.php
+    resource: http://localhost/includes/getUpdates.php
 
 # Notifying pillar that there is a state change
 automation:

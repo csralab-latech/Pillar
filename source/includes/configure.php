@@ -4,7 +4,7 @@
 
 //////////////////////////
 //   Home Assistant Information
-$HASS_HOSTNAME 	= "locahost";
+$HASS_HOSTNAME 	= "localhost";
 $HASS_PORT		= "8123";
 $HASS_URL		= "http://"  . $HASS_HOSTNAME . ":" . $HASS_PORT . "/";
 //////////////////////////

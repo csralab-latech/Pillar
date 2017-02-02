@@ -13,7 +13,7 @@ include 'includes/controls.php';
 include 'includes/sql_queries.php';
 include 'includes/connect_db.php';
 // Home assistant variables
-$home_assistant_url = "http://iothouse.ddns.net:8123/api/";
+$home_assistant_url = "http://localhost:8123/api/";
 $ch = curl_init($home_assistant_url);
 
 ?>
@@ -176,7 +176,7 @@ $ch = curl_init($home_assistant_url);
 		 				<div class='list-group'>
 					            <a class="list-group-item" onclick="toggleVisibility(this,'home');" href="/">Home</a>
 					            <a class="list-group-item" onclick="toggleVisibility(this,'kiosk');" href="/fridge">Kiosk</a>
-					            <a class="list-group-item" onclick="toggleVisibility(this,'fridge');" href="http://iothouse.ddns.net:8080/laTechProject2">Main Fridge</a>
+					            <a class="list-group-item" onclick="toggleVisibility(this,'fridge');" href="http://localhost:8080/laTechProject2">Main Fridge</a>
                                                 </div>
                                         </div>
                                         <div id="linkss" class="col-md-10 col-lg-10 col-sm-10">

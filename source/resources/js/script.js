@@ -26,7 +26,7 @@ $(document).ready(function(){
 	//alert(entities.length);
 	var i=0;
 	var entity = "";
-	var source = new EventSource("http://iothouse.ddns.net:8123/api/stream");
+	var source = new EventSource("http://localhost:8123/api/stream");
     source.onmessage = function(event) {
     	
     	if ("ping" === event.data) {
